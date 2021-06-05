@@ -6,25 +6,31 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import model.Producto;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 
-public class FrmRegProd extends JFrame {
+public class FrmRegProd extends JInternalFrame implements MouseListener {
 	private JTextField txtCodigo;
 	private JTextField txtProducto;
 	private JTextField txtCantidad;
 	private JTextField txtPrecio;
-
-	private JTextArea txtS;
 	private JComboBox cboTipo;
+	private JTable tabla;
+	private DefaultTableModel modelo;
 
 	/**
 	 * Launch the application.
@@ -46,7 +52,11 @@ public class FrmRegProd extends JFrame {
 	 * Create the frame.
 	 */
 	public FrmRegProd() {
-		setBounds(100, 100, 506, 350);
+		setIconifiable(true);
+		setResizable(true);
+		setMaximizable(true);
+		setClosable(true);
+		setBounds(100, 100, 506, 363);
 		getContentPane().setLayout(null);
 
 		JLabel label = new JLabel("C\u00F3digo:");
@@ -111,11 +121,6 @@ public class FrmRegProd extends JFrame {
 		btnGuardar.setBounds(328, 78, 116, 34);
 		getContentPane().add(btnGuardar);
 
-		txtS = new JTextArea();
-		txtS.setText("");
-		txtS.setBounds(30, 169, 434, 95);
-		getContentPane().add(txtS);
-
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.setBounds(328, 123, 116, 34);
 		getContentPane().add(btnEditar);
@@ -126,8 +131,26 @@ public class FrmRegProd extends JFrame {
 		getContentPane().add(lblMantenimientoDeProductos);
 
 		JButton btnConsultar = new JButton("Consultar");
-		btnConsultar.setBounds(191, 275, 109, 25);
+		btnConsultar.setBounds(191, 294, 109, 25);
 		getContentPane().add(btnConsultar);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(30, 164, 414, 120);
+		getContentPane().add(scrollPane);
+		
+		Object[] columnas = {
+			"Código",
+			"Nombre",
+			"Categoría",
+			"Stock",
+			"Precio"
+		};
+		modelo = new DefaultTableModel();
+		modelo.setColumnIdentifiers(columnas);
+		tabla = new JTable(modelo);
+		tabla.addMouseListener(this);
+		tabla.setFillsViewportHeight(true);
+		scrollPane.setViewportView(tabla);
 
 	}
 
@@ -142,9 +165,6 @@ public class FrmRegProd extends JFrame {
 		cant = leerCantidad();
 		pre  = leerPrecio();
 		tipo = leerTipo();
-
-		txtS.setText("prod\tCant\tPrecio\n");
-		txtS.append(prod + "\t" + cant + "\t" + pre);
 
 	}
 
@@ -168,4 +188,20 @@ public class FrmRegProd extends JFrame {
 		return Double.parseDouble(txtPrecio.getText());
 	}
 
+	public void mouseClicked(MouseEvent e) {
+		if (e.getSource() == tabla) {
+			mouseClickedTabla(e);
+		}
+	}
+	public void mouseEntered(MouseEvent e) {
+	}
+	public void mouseExited(MouseEvent e) {
+	}
+	public void mousePressed(MouseEvent e) {
+	}
+	public void mouseReleased(MouseEvent e) {
+	}
+	protected void mouseClickedTabla(MouseEvent e) {
+		int fila = tabla.getSelectedRow();
+	}
 }
