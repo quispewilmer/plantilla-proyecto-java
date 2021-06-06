@@ -6,7 +6,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 
 import model.Producto;
 
@@ -18,19 +17,15 @@ import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
 
-public class FrmRegProd extends JInternalFrame implements MouseListener {
+public class FrmRegProd extends JInternalFrame {
 	private JTextField txtCodigo;
 	private JTextField txtProducto;
 	private JTextField txtCantidad;
 	private JTextField txtPrecio;
+
+	private JTextArea txtS;
 	private JComboBox cboTipo;
-	private JTable tabla;
-	private DefaultTableModel modelo;
 
 	/**
 	 * Launch the application.
@@ -52,11 +47,11 @@ public class FrmRegProd extends JInternalFrame implements MouseListener {
 	 * Create the frame.
 	 */
 	public FrmRegProd() {
-		setIconifiable(true);
 		setResizable(true);
+		setIconifiable(true);
 		setMaximizable(true);
 		setClosable(true);
-		setBounds(100, 100, 506, 363);
+		setBounds(100, 100, 506, 350);
 		getContentPane().setLayout(null);
 
 		JLabel label = new JLabel("C\u00F3digo:");
@@ -66,7 +61,7 @@ public class FrmRegProd extends JInternalFrame implements MouseListener {
 		txtCodigo = new JTextField();
 		txtCodigo.setText("");
 		txtCodigo.setColumns(10);
-		txtCodigo.setBounds(88, 42, 86, 20);
+		txtCodigo.setBounds(109, 46, 86, 20);
 		getContentPane().add(txtCodigo);
 
 		JLabel label_1 = new JLabel("Producto:");
@@ -76,7 +71,7 @@ public class FrmRegProd extends JInternalFrame implements MouseListener {
 		txtProducto = new JTextField();
 		txtProducto.setText("");
 		txtProducto.setColumns(10);
-		txtProducto.setBounds(88, 70, 86, 20);
+		txtProducto.setBounds(109, 71, 86, 20);
 		getContentPane().add(txtProducto);
 
 		JLabel label_2 = new JLabel("Tipo:");
@@ -84,28 +79,28 @@ public class FrmRegProd extends JInternalFrame implements MouseListener {
 		getContentPane().add(label_2);
 
 		cboTipo = new JComboBox();
-		cboTipo.setBounds(88, 94, 123, 20);
+		cboTipo.setBounds(109, 95, 123, 20);
 		cboTipo.setModel(new DefaultComboBoxModel(new String[] { "Seleccione tipo", "Pastillas", "Jarabe", "Otros" }));
 		getContentPane().add(cboTipo);
 
 		JLabel label_3 = new JLabel("Cantidad:");
-		label_3.setBounds(30, 122, 60, 14);
+		label_3.setBounds(30, 122, 86, 14);
 		getContentPane().add(label_3);
 
 		txtCantidad = new JTextField();
 		txtCantidad.setText("");
 		txtCantidad.setColumns(10);
-		txtCantidad.setBounds(88, 119, 53, 20);
+		txtCantidad.setBounds(107, 120, 53, 20);
 		getContentPane().add(txtCantidad);
 
 		JLabel label_4 = new JLabel("Precio:");
-		label_4.setBounds(178, 122, 46, 14);
+		label_4.setBounds(178, 122, 67, 14);
 		getContentPane().add(label_4);
 
 		txtPrecio = new JTextField();
 		txtPrecio.setText("");
 		txtPrecio.setColumns(10);
-		txtPrecio.setBounds(220, 119, 60, 20);
+		txtPrecio.setBounds(240, 120, 60, 20);
 		getContentPane().add(txtPrecio);
 
 		JButton btnNuevo = new JButton("Nuevo");
@@ -115,11 +110,16 @@ public class FrmRegProd extends JInternalFrame implements MouseListener {
 		JButton btnGuardar = new JButton("Guardar");
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ingresar();
+				ingresar();					
 			}
 		});
 		btnGuardar.setBounds(328, 78, 116, 34);
 		getContentPane().add(btnGuardar);
+
+		txtS = new JTextArea();
+		txtS.setText("");
+		txtS.setBounds(30, 169, 434, 95);
+		getContentPane().add(txtS);
 
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.setBounds(328, 123, 116, 34);
@@ -131,77 +131,97 @@ public class FrmRegProd extends JInternalFrame implements MouseListener {
 		getContentPane().add(lblMantenimientoDeProductos);
 
 		JButton btnConsultar = new JButton("Consultar");
-		btnConsultar.setBounds(191, 294, 109, 25);
+		btnConsultar.setBounds(191, 275, 109, 25);
 		getContentPane().add(btnConsultar);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(30, 164, 414, 120);
-		getContentPane().add(scrollPane);
-		
-		Object[] columnas = {
-			"Código",
-			"Nombre",
-			"Categoría",
-			"Stock",
-			"Precio"
-		};
-		modelo = new DefaultTableModel();
-		modelo.setColumnIdentifiers(columnas);
-		tabla = new JTable(modelo);
-		tabla.addMouseListener(this);
-		tabla.setFillsViewportHeight(true);
-		scrollPane.setViewportView(tabla);
 
 	}
 
 	void ingresar() {
-		String cod, prod;
-		int cant;
-		double pre;
-		int tipo;
+		String cod = null, prod = null;
+		int cant = 0;
+		double pre = 0;
+		int tipo = 0;
 
-		cod  = leerCodigo();
-		prod = leerProducto();
-		cant = leerCantidad();
-		pre  = leerPrecio();
-		tipo = leerTipo();
+		try {
+			cod  = leerCodigo();
+			prod = leerProducto();
+			cant = leerCantidad();
+			pre  = leerPrecio();
+			tipo = leerTipo();			
+			txtS.setText("prod\tCant\tPrecio\n");
+			txtS.append(prod + "\t" + cant + "\t" + pre);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
 
 	}
 
-	private String leerCodigo() {
-		return txtCodigo.getText();
+	private String leerCodigo() throws Exception {
+		String answer = null;
+		if(txtCodigo.getText().length() != 0 && txtCodigo.getText().matches("i[0-9]{9}@cibertec.edu.pe")) {
+			try {
+				answer = txtCodigo.getText();
+			} catch(Exception e) {
+				JOptionPane.showMessageDialog(null, e.getMessage());
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Debe llenar correctamente el campo de código");
+			throw new Exception();
+		}
+		
+		return answer;
 	}
 
-	String leerProducto() {
-		return txtProducto.getText();
+	private String leerProducto() throws Exception {
+		String answer = null;
+		if(txtProducto.getText().length() != 0) {
+			try {
+				answer = txtProducto.getText();
+				answer = answer.substring(0, 1).toUpperCase() + answer.substring(1);
+			} catch(Exception e) {
+				JOptionPane.showMessageDialog(null, e.getMessage());
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Debe llenar el campo de producto");
+			throw new Exception();
+		}
+		
+		return answer;
 	}
 	
 	int leerTipo() {
 		return cboTipo.getSelectedIndex();
 	}
 
-	int leerCantidad() {
-		return Integer.parseInt(txtCantidad.getText());
-	}
-
-	double leerPrecio() {
-		return Double.parseDouble(txtPrecio.getText());
-	}
-
-	public void mouseClicked(MouseEvent e) {
-		if (e.getSource() == tabla) {
-			mouseClickedTabla(e);
+	int leerCantidad() throws Exception {
+		int answer = 0;
+		if(txtCantidad.getText().length() != 0) {
+			try {
+				answer = Integer.parseInt(txtCantidad.getText());
+			} catch(Exception e) {
+				JOptionPane.showMessageDialog(null, "Debe poner una cantidad válida");
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Debe llenar el campo de cantidad");
+			throw new Exception();
 		}
+		
+		return 0;
 	}
-	public void mouseEntered(MouseEvent e) {
-	}
-	public void mouseExited(MouseEvent e) {
-	}
-	public void mousePressed(MouseEvent e) {
-	}
-	public void mouseReleased(MouseEvent e) {
-	}
-	protected void mouseClickedTabla(MouseEvent e) {
-		int fila = tabla.getSelectedRow();
+
+	double leerPrecio() throws Exception {
+		double answer = 0;
+		if(txtPrecio.getText().length() != 0) {
+			try {
+				answer = Double.parseDouble(txtPrecio.getText());
+			} catch(Exception e) {
+				JOptionPane.showMessageDialog(null, "Debe poner un precio válido");
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Debe llenar el campo de precio");
+			throw new Exception();
+		}
+		
+		return answer;
 	}
 }
