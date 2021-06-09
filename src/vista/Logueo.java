@@ -168,6 +168,7 @@ public class Logueo extends JFrame implements ActionListener, WindowListener {
 		
 		return answer;
 	}
+	
  	protected void actionPerformedBtnAceptar(ActionEvent arg0) {
  		String usuario, clave;
 		try {
@@ -179,6 +180,7 @@ public class Logueo extends JFrame implements ActionListener, WindowListener {
 			JOptionPane.showMessageDialog(null, "Introduzca sus datos denuevo.");
 		}
 	}
+ 	
 	public void windowActivated(WindowEvent e) {
 	}
 	public void windowClosed(WindowEvent e) {
