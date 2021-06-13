@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import model.Producto;
+import model.Product;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -64,7 +64,7 @@ public class FrmRegProd extends JInternalFrame {
 		txtCodigo.setBounds(109, 46, 86, 20);
 		getContentPane().add(txtCodigo);
 
-		JLabel label_1 = new JLabel("Producto:");
+		JLabel label_1 = new JLabel("Product:");
 		label_1.setBounds(30, 73, 75, 14);
 		getContentPane().add(label_1);
 

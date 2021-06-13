@@ -51,7 +51,7 @@ public class FrmRptVtas extends JInternalFrame implements MouseListener {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Reporte de Ventas");
+		JLabel lblNewLabel = new JLabel("FrmUserReport de Ventas");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNewLabel.setBounds(10, 11, 215, 37);
 		getContentPane().add(lblNewLabel);
@@ -60,7 +60,7 @@ public class FrmRptVtas extends JInternalFrame implements MouseListener {
 		lblDel.setBounds(20, 59, 39, 24);
 		getContentPane().add(lblDel);
 		
-		JButton btnReporte = new JButton("Reporte");
+		JButton btnReporte = new JButton("FrmUserReport");
 		btnReporte.setBounds(339, 60, 89, 23);
 		getContentPane().add(btnReporte);
 		

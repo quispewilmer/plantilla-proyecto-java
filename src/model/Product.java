@@ -1,13 +1,13 @@
 package model;
 
-public class Producto {
+public class Product {
 	// atributos privados -> Tablas / GUI
 	private String cod, prod;
 	private int cant;
 	private double pre;
 	private int tipo;
 	
-	public Producto(String cod, String prod, int cant, double pre, int tipo) {
+	public Product(String cod, String prod, int cant, double pre, int tipo) {
 		this.cod = cod;
 		this.prod = prod;
 		this.cant = cant;

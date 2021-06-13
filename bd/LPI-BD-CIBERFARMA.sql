@@ -60,6 +60,12 @@ foreign key (num_bol) references tb_cab_boleta(num_bol),
 foreign key (idprod) references tb_productos(idprod)
 );
 
+create table tb_estados(
+idest		int,
+descripcion	varchar(80),
+primary key (idest)
+);
+
 -- inserts
 insert into tb_tipos values (1, 'Administrador');
 insert into tb_tipos values (2, 'Cliente');
@@ -112,3 +118,22 @@ insert into tb_productos values ('P0031','Mejoralito UForte',10,0.99,5,1);
 
 insert into tb_cab_boleta values ('B0001',curdate(), 1, 10, 7.50);
 
+insert into tb_estados values (1, 'Activo');
+insert into tb_estados values (2, 'Pasivo');
+
+drop procedure if exists usp_listarUsuariosPorTipo;
+
+DELIMITER $$
+create procedure usp_listarUsuariosPorTipo(codigo int)
+begin
+	select *
+    from tb_usuarios U
+    inner join tb_tipos T
+    on U.tipo = T.id_tipo
+    where T.id_tipo = codigo;
+end $$
+DELIMITER ;
+
+select * from tb_usuarios;
+
+SELECT codigo, nombre, apellido, usuario, fnacim, tipo, estado FROM tb_usuarios
