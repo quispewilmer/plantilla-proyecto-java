@@ -17,9 +17,12 @@ import javax.swing.JTable;
 import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
 import java.awt.event.MouseEvent;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 
-public class FrmRptVtas extends JInternalFrame implements MouseListener {
+public class FrmRptVtas extends JFrame implements MouseListener {
 	private JDateChooser txtFecha;
 	private JTable tabla;
 	DefaultTableModel modelo;
@@ -45,28 +48,48 @@ public class FrmRptVtas extends JInternalFrame implements MouseListener {
 	 */
 	public FrmRptVtas() {
 		setResizable(true);
-		setIconifiable(true);
-		setMaximizable(true);
-		setClosable(true);
-		setBounds(100, 100, 450, 300);
-		getContentPane().setLayout(null);
+		setBounds(100, 100, 555, 300);
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.columnWidths = new int[]{12, 0, 110, 114, 194, 0, 0};
+		gridBagLayout.rowHeights = new int[]{37, 24, 164, 0};
+		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		getContentPane().setLayout(gridBagLayout);
 		
 		JLabel lblNewLabel = new JLabel("FrmUserReport de Ventas");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel.setBounds(10, 11, 215, 37);
-		getContentPane().add(lblNewLabel);
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.fill = GridBagConstraints.BOTH;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.gridwidth = 3;
+		gbc_lblNewLabel.gridx = 1;
+		gbc_lblNewLabel.gridy = 0;
+		getContentPane().add(lblNewLabel, gbc_lblNewLabel);
 		
 		JLabel lblDel = new JLabel("Del:");
-		lblDel.setBounds(20, 59, 39, 24);
-		getContentPane().add(lblDel);
+		GridBagConstraints gbc_lblDel = new GridBagConstraints();
+		gbc_lblDel.fill = GridBagConstraints.BOTH;
+		gbc_lblDel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblDel.gridx = 1;
+		gbc_lblDel.gridy = 1;
+		getContentPane().add(lblDel, gbc_lblDel);
+		
+		txtFecha = new JDateChooser();
+		GridBagConstraints gbc_txtFecha = new GridBagConstraints();
+		gbc_txtFecha.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtFecha.anchor = GridBagConstraints.SOUTH;
+		gbc_txtFecha.insets = new Insets(0, 0, 5, 5);
+		gbc_txtFecha.gridx = 2;
+		gbc_txtFecha.gridy = 1;
+		getContentPane().add(txtFecha, gbc_txtFecha);
 		
 		JButton btnReporte = new JButton("FrmUserReport");
-		btnReporte.setBounds(339, 60, 89, 23);
-		getContentPane().add(btnReporte);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 92, 418, 164);
-		getContentPane().add(scrollPane);
+		GridBagConstraints gbc_btnReporte = new GridBagConstraints();
+		gbc_btnReporte.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnReporte.insets = new Insets(0, 0, 5, 5);
+		gbc_btnReporte.gridx = 4;
+		gbc_btnReporte.gridy = 1;
+		getContentPane().add(btnReporte, gbc_btnReporte);
 		
 		Object[] columnas = {
 				"Fecha",
@@ -75,14 +98,19 @@ public class FrmRptVtas extends JInternalFrame implements MouseListener {
 		};
 		modelo = new DefaultTableModel();
 		modelo.setColumnIdentifiers(columnas);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.insets = new Insets(0, 0, 0, 5);
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridwidth = 4;
+		gbc_scrollPane.gridx = 1;
+		gbc_scrollPane.gridy = 2;
+		getContentPane().add(scrollPane, gbc_scrollPane);
 		tabla = new JTable(modelo);
 		tabla.addMouseListener(this);
 		tabla.setFillsViewportHeight(true);
 		scrollPane.setViewportView(tabla);
-		
-		txtFecha = new JDateChooser();
-		txtFecha.setBounds(61, 64, 114, 19);
-		getContentPane().add(txtFecha);
 
 	}
 	

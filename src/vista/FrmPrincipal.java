@@ -28,8 +28,10 @@ public class FrmPrincipal extends JFrame implements ActionListener {
 	private JMenuItem mntmClientes;
 	private JMenuItem mntmProductos;
 	private JDesktopPane contenedor;
-	private JMenuItem mntmProductos_1;
+	private JMenuItem mntmClientes_1;
 	private JMenuItem mntmVentas;
+	private JMenu mnVentas;
+	private JMenuItem mntmRealizarVentas;
 
 	/**
 	 * Launch the application.
@@ -51,7 +53,8 @@ public class FrmPrincipal extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public FrmPrincipal() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Bienvenido, " + Logueo.newUser.getName());
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		
 		menuBar = new JMenuBar();
@@ -86,17 +89,24 @@ public class FrmPrincipal extends JFrame implements ActionListener {
 		mnReportes.setIcon(new ImageIcon(FrmPrincipal.class.getResource("/img/busca.png")));
 		menuBar.add(mnReportes);
 		
-		mntmProductos_1 = new JMenuItem("Productos");
-		mntmProductos_1.setIcon(new ImageIcon(FrmPrincipal.class.getResource("/img/abrir2.png")));
-		mntmProductos_1.addActionListener(this);
-		mntmProductos_1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK | InputEvent.ALT_MASK));
-		mnReportes.add(mntmProductos_1);
+		mntmClientes_1 = new JMenuItem("Clientes");
+		mntmClientes_1.setIcon(new ImageIcon(FrmPrincipal.class.getResource("/img/abrir2.png")));
+		mntmClientes_1.addActionListener(this);
+		mntmClientes_1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK | InputEvent.ALT_MASK));
+		mnReportes.add(mntmClientes_1);
 		
 		mntmVentas = new JMenuItem("Ventas");
 		mntmVentas.setIcon(new ImageIcon(FrmPrincipal.class.getResource("/img/busca.png")));
 		mntmVentas.addActionListener(this);
 		mntmVentas.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK | InputEvent.ALT_MASK));
 		mnReportes.add(mntmVentas);
+		
+		mnVentas = new JMenu("Ventas");
+		menuBar.add(mnVentas);
+		
+		mntmRealizarVentas = new JMenuItem("Realizar Ventas");
+		mntmRealizarVentas.addActionListener(this);
+		mnVentas.add(mntmRealizarVentas);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -104,16 +114,27 @@ public class FrmPrincipal extends JFrame implements ActionListener {
 		
 		contenedor = new JDesktopPane();
 		contentPane.add(contenedor, BorderLayout.CENTER);
+		this.setLocationRelativeTo(null);
+		
+		switch(Logueo.newUser.getType()) {
+			case 2:
+				mnMantenimientos.setVisible(false);
+				mnReportes.setVisible(false);
+				break;
+		}
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == mntmRealizarVentas) {
+			actionPerformedMntmRealizarVentas(arg0);
+		}
 		if (arg0.getSource() == mntmVentas) {
 			actionPerformedMntmVentas(arg0);
 		}
 		if (arg0.getSource() == mntmProductos) {
 			actionPerformedMntmProductos(arg0);
 		}
-		if (arg0.getSource() == mntmProductos_1) {
+		if (arg0.getSource() == mntmClientes_1) {
 			actionPerformedMntmProductos_1(arg0);
 		}
 		if (arg0.getSource() == mntmClientes) {
@@ -127,19 +148,23 @@ public class FrmPrincipal extends JFrame implements ActionListener {
 		System.exit(1);
 	}
 	protected void actionPerformedMntmClientes(ActionEvent arg0) {
-		
+		FrmRegister register = new FrmRegister();
+		register.setVisible(true);
 	}
 	protected void actionPerformedMntmProductos_1(ActionEvent arg0) {
-		
+		FrmUserReportByType userReportByType = new FrmUserReportByType();
+		userReportByType.setVisible(true);
 	}
 	protected void actionPerformedMntmProductos(ActionEvent arg0) {
 		FrmRegProd frp = new FrmRegProd();
-		contenedor.add(frp);
 		frp.setVisible(true);
 	}
 	protected void actionPerformedMntmVentas(ActionEvent arg0) {
 		FrmRptVtas frv = new FrmRptVtas();
-		contenedor.add(frv);
 		frv.setVisible(true);
+	}
+	protected void actionPerformedMntmRealizarVentas(ActionEvent arg0) {
+		FrmBoleta frmBoleta = new FrmBoleta();
+		frmBoleta.setVisible(true);
 	}
 }

@@ -11,4 +11,5 @@ public interface InterfazUsuario {
 	public User search(int code);
 	public ArrayList<User> getUsers();
 	public ArrayList<User> getUsersByType(int idType);
+	public User validateAccess(String user, String password);
 }

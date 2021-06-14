@@ -23,5 +23,6 @@ public class HiloCargador extends Thread {
 		cargador.dispose();
 		FrmPrincipal fp = new FrmPrincipal();
 		fp.setVisible(true);
+		fp.setExtendedState(MAX_PRIORITY);
 	}
 }

@@ -30,6 +30,8 @@ import java.awt.event.KeyEvent;
 import javax.swing.event.ChangeListener;
 
 import hilos.HiloContador;
+import mantenimientos.UserMaintenance;
+import model.User;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.SwingConstants;
@@ -44,6 +46,7 @@ public class Logueo extends JFrame implements ActionListener, WindowListener {
 	public static Logueo frame;
 	private JButton btnAceptar;
 	public static JLabel lblTiempo;
+	public static User newUser = new User();
 
 	/**
 	 * Launch the application.
@@ -122,7 +125,7 @@ public class Logueo extends JFrame implements ActionListener, WindowListener {
 		lblMensaje.setBounds(114, 11, 194, 14);
 		contentPane.add(lblMensaje);
 
-		
+		setLocationRelativeTo(null);
 	} // fin del constructor de la clase
 
 	public void actionPerformed(ActionEvent arg0) {
@@ -155,9 +158,9 @@ public class Logueo extends JFrame implements ActionListener, WindowListener {
 	private String leerClave() throws Exception {
 		String answer = null;
 		
-		if(txtClave.getText().length() != 0) {
+		if(String.valueOf(txtClave.getPassword()).length() != 0) {
 			try {
-				answer = txtClave.getText();
+				answer = String.valueOf(txtClave.getPassword());
 			} catch(Exception e) {
 				JOptionPane.showMessageDialog(null, "Introduzca correctamente el usuario");
 			}
@@ -170,15 +173,7 @@ public class Logueo extends JFrame implements ActionListener, WindowListener {
 	}
 	
  	protected void actionPerformedBtnAceptar(ActionEvent arg0) {
- 		String usuario, clave;
-		try {
-			usuario = leerUsuario();
-			clave = leerClave();
-			FrmPreLoader fpl = new FrmPreLoader();
-			fpl.setVisible(true);
-		} catch(Exception e) {
-			JOptionPane.showMessageDialog(null, "Introduzca sus datos denuevo.");
-		}
+ 		validateAccess();
 	}
  	
 	public void windowActivated(WindowEvent e) {
@@ -201,5 +196,30 @@ public class Logueo extends JFrame implements ActionListener, WindowListener {
 	protected void windowOpenedThis(WindowEvent e) {
 		HiloContador hc = new HiloContador(this);
 		hc.start();
+	}
+	
+	public void validateAccess() {
+		String user, password;
+		
+		user = readUser();
+		password = readPassword();
+	
+		newUser = new UserMaintenance().validateAccess(user, password);
+		
+		if(newUser == null) {
+			JOptionPane.showMessageDialog(null, "Usuario o clave incorrecto.");
+		} else {
+			FrmPreLoader frmPreLoader = new FrmPreLoader();
+			frmPreLoader.setVisible(true);
+			this.dispose();
+		}
+	}
+
+	private String readPassword() {
+		return String.valueOf(txtClave.getPassword());
+	}
+
+	private String readUser() {
+		return txtUsuario.getText();
 	}
 }

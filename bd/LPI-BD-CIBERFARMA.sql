@@ -66,6 +66,29 @@ descripcion	varchar(80),
 primary key (idest)
 );
 
+/*
+create table tb_cab_boleta(
+num_bol      char(5) not null,
+fch_bol    date,
+cod_cliente  int not null,
+cod_vendedor int not null,
+total_bol decimal(8,2),
+primary key (num_bol),
+foreign key (cod_cliente) references tb_usuarios(codigo),
+foreign key (cod_vendedor) references tb_usuarios(codigo)
+);
+
+create table tb_det_boleta(
+num_bol     char(5) not null,
+idprod      char(5) not null,
+cantidad    int,
+preciovta   decimal(8,2),
+importe		decimal(8,2),
+primary key (num_bol,idprod),
+foreign key (num_bol) references tb_cab_boleta(num_bol),
+foreign key (idprod) references tb_productos(idprod)
+);
+*/
 -- inserts
 insert into tb_tipos values (1, 'Administrador');
 insert into tb_tipos values (2, 'Cliente');
@@ -134,6 +157,13 @@ begin
 end $$
 DELIMITER ;
 
-select * from tb_usuarios;
+DELIMITER $$
+create procedure usp_validarUsuario(usr char(4), pas char(5))
+begin
+	select * from tb_usuarios where usuario = usr and clave = pas;
+end $$
+DELIMITER ;
 
+select * from tb_usuarios;
+SELECT * FROM tb_tipos WHERE id_tipo = 1;
 SELECT codigo, nombre, apellido, usuario, fnacim, tipo, estado FROM tb_usuarios

@@ -17,8 +17,11 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 
-public class FrmPreLoader extends JFrame implements WindowListener {
+public class FrmPreLoader extends JFrame implements WindowListener, WindowStateListener, PropertyChangeListener {
 
 	private JPanel contentPane;
 	public static JProgressBar prbCarga;
@@ -43,13 +46,15 @@ public class FrmPreLoader extends JFrame implements WindowListener {
 	 * Create the frame.
 	 */
 	public FrmPreLoader() {
+		addWindowStateListener(this);
 		addWindowListener(this);
 		setTitle("Cargando...");
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 347, 111);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
+		contentPane.addPropertyChangeListener(this);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -85,5 +90,19 @@ public class FrmPreLoader extends JFrame implements WindowListener {
 	protected void windowOpenedThis(WindowEvent e) {
 		HiloCargador hc = new HiloCargador(this);
 		hc.start();
+	}
+	public void windowStateChanged(WindowEvent arg0) {
+		if (arg0.getSource() == this) {
+			windowStateChangedThis(arg0);
+		}
+	}
+	protected void windowStateChangedThis(WindowEvent arg0) {
+	}
+	public void propertyChange(PropertyChangeEvent arg0) {
+		if (arg0.getSource() == contentPane) {
+			propertyChangeContentPane(arg0);
+		}
+	}
+	protected void propertyChangeContentPane(PropertyChangeEvent arg0) {
 	}
 }

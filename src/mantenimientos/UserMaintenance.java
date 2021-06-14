@@ -216,4 +216,39 @@ public class UserMaintenance implements InterfazUsuario {
 		return usersList;
 	}
 
+	@Override
+	public User validateAccess(String user, String password) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		final String SQL = "{CALL usp_validarUsuario(?, ?)}";
+		User userS = null;
+
+		try {
+			connection = MySQLConexion8.getConexion();
+			preparedStatement = connection.prepareStatement(SQL);
+			preparedStatement.setString(1, user);
+			preparedStatement.setString(2, password);
+
+			resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				userS = new User();
+				userS.setCode(resultSet.getInt(1));
+				userS.setName(resultSet.getString(2));
+				userS.setUser(resultSet.getString(4));
+				userS.setKey(resultSet.getString(5));
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Hubo un error al conectar.");
+			System.out.println(e.getMessage() + e.getLocalizedMessage() + e.getCause());
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Hubo un error al cerrar la conexión.");
+			}
+		}
+		return userS;
+	}
+
 }
